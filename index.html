@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>DisasterLink Prototype (Shop • Data Center • Fire Station)</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">DL</div>
+        <div>
+          <div class="title">DisasterLink Prototype</div>
+          <div class="subtitle">
+            Shop Registration • Central Data Center • Fire Station
+          </div>
+        </div>
+      </div>
+
+      <nav class="tabs">
+        <button class="tab active" data-view="shop">Shop Portal</button>
+        <button class="tab" data-view="datacenter">Data Center</button>
+        <button class="tab" data-view="firestation">Fire Station</button>
+      </nav>
+    </header>
+
+    <main class="container">
+      <!-- SHOP PORTAL -->
+      <section id="view-shop" class="view">
+        <h2>Shop / Seller Portal — Register Device</h2>
+        <p class="hint">
+          This simulates registration at the place where the product is sold:
+          buyer info, location, phone numbers, category, and preferred language.
+        </p>
+
+        <div class="grid2">
+          <form id="registerForm" class="card">
+            <h3>Register a new device</h3>
+
+            <label
+              >Device ID (Code / QR value)
+              <input id="deviceId" placeholder="DL-UMS-0001" required />
+            </label>
+
+            <label
+              >Owner / Institution name
+              <input
+                id="ownerName"
+                placeholder="Mohamed / BRI Branch Surakarta"
+                required
+              />
+            </label>
+
+            <label
+              >Category (usage)
+              <select id="category" required>
+                <option value="Home">Home</option>
+                <option value="Bank">Bank</option>
+                <option value="Mall">Mall</option>
+                <option value="Shop">Shop</option>
+                <option value="Other">Other nearby institution</option>
+              </select>
+            </label>
+
+            <label
+              >Preferred language (chosen at purchase)
+              <select id="language" required>
+                <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                <option value="English">English</option>
+                <option value="Javanese">Javanese</option>
+                <option value="Sundanese">Sundanese</option>
+                <option value="Balinese">Balinese</option>
+              </select>
+            </label>
+
+            <label
+              >Address
+              <input
+                id="address"
+                placeholder="Street, District, City"
+                required
+              />
+            </label>
+
+            <div class="grid2">
+              <label
+                >Latitude
+                <input
+                  id="lat"
+                  type="number"
+                  step="0.000001"
+                  placeholder="-7.556"
+                  required
+                />
+              </label>
+              <label
+                >Longitude
+                <input
+                  id="lng"
+                  type="number"
+                  step="0.000001"
+                  placeholder="110.769"
+                  required
+                />
+              </label>
+            </div>
+
+            <label
+              >Phone numbers (comma separated)
+              <textarea
+                id="phones"
+                rows="3"
+                placeholder="+62..., +62..., +62..."
+                required
+              ></textarea>
+            </label>
+
+            <div class="row">
+              <button type="submit" class="primary">Save Device</button>
+              <button type="button" id="seedDemo" class="ghost">
+                Seed Demo Data
+              </button>
+            </div>
+
+            <div class="tiny">
+              Tip: language is saved to the device profile; the device itself
+              does not show language switching.
+            </div>
+          </form>
+
+          <div class="card">
+            <h3>Registered devices</h3>
+            <div class="row">
+              <input
+                id="deviceSearch"
+                placeholder="Search by Device ID / owner / address..."
+              />
+              <button
+                id="clearAll"
+                class="danger ghost"
+                title="Deletes everything"
+              >
+                Clear All
+              </button>
+            </div>
+            <div id="devicesList" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DATA CENTER -->
+      <section id="view-datacenter" class="view hidden">
+        <h2>Central Data Center — All Hazards</h2>
+        <p class="hint">
+          This dashboard aggregates devices and triggers alerts (simulation).
+          Fire is local (device-originated), while flood/earthquake/volcano can
+          be treated as region-wide from official sources.
+        </p>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Simulate an alert</h3>
+
+            <label
+              >Choose device
+              <select id="dcDeviceSelect"></select>
+            </label>
+
+            <label
+              >Hazard type
+              <select id="dcHazard">
+                <option value="Fire">Fire</option>
+                <option value="Flood">Flood</option>
+                <option value="Earthquake">Earthquake</option>
+                <option value="Volcano">Volcano</option>
+              </select>
+            </label>
+
+            <div class="grid2">
+              <label
+                >Severity
+                <select id="dcSeverity">
+                  <option value="Advisory">Advisory</option>
+                  <option value="Warning">Warning</option>
+                  <option value="Evacuate Now">Evacuate Now</option>
+                </select>
+              </label>
+
+              <label
+                >Neighbor radius (meters) — Fire only
+                <select id="dcRadius">
+                  <option value="100">100</option>
+                  <option value="300" selected>300</option>
+                  <option value="500">500</option>
+                </select>
+              </label>
+            </div>
+
+            <label
+              >Message (optional)
+              <input
+                id="dcMessage"
+                placeholder="e.g., Fire detected, evacuate immediately!"
+              />
+            </label>
+
+            <div class="row">
+              <button id="triggerAlert" class="primary">Trigger Alert</button>
+              <button id="resetAlerts" class="ghost">Reset Alerts</button>
+            </div>
+
+            <div class="tiny">
+              In a real system, this would send: LED + speaker activation +
+              SMS/WhatsApp via server.
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Active alerts (live)</h3>
+            <div id="alertsList" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FIRE STATION -->
+      <section id="view-firestation" class="view hidden">
+        <h2>Fire Station Dashboard — Local Fire Incidents</h2>
+        <p class="hint">
+          Fire station needs fast action: big buttons, no typing. This view
+          shows fire incidents and supports “warn nearby devices” with one
+          click.
+        </p>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Incoming fire incidents</h3>
+            <div id="fireIncidentsList" class="list"></div>
+          </div>
+
+          <div class="card">
+            <h3>Incident detail</h3>
+            <div id="incidentDetail" class="detail empty">
+              Select an incident to view details.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      Prototype is stored in your browser (LocalStorage). No internet required.
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
